@@ -39,10 +39,9 @@ then
 		chmod -R 777 compiles #Use approriate write permission when moving to production
 		mkdir uploads
 		mkdir uploads/cms
-		chmod -R 777 uploads #Use approriate write permission when moving to production
-		wget https://raw.githubusercontent.com/z3r0101/webroot/master/index.php
-		wget https://raw.githubusercontent.com/z3r0101/webroot/master/.htaccess
-		wget https://raw.githubusercontent.com/z3r0101/webroot/master/.gitignore
+		chmod -R 777 uploads #Use approriate write permission when moving to production	
+		wget https://raw.githubusercontent.com/z3r0101/siteroot/master/.htaccess
+		wget https://raw.githubusercontent.com/z3r0101/siteroot/master/.gitignore
 	 
 
 		is_executed=1
