@@ -73,6 +73,7 @@ else
 			echo "z3r0101 php framework project successfully created."
 		fi
 		if [ "$1" == "remove"  ]
+		then	
 			echo "z3r0101 php framework project has been removed."
 		fi
 	fi
