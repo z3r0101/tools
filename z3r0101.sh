@@ -25,36 +25,82 @@ then
 fi
 
 
+#if ls -1qA $param_website_name | grep -q .
+#then
+#	echo 'Not empty!'
+#else
+#	echo 'Empty!'	
+#fi	
+#exit
+
+
 if [ "$1" == "create" ]
 then
-		
-	if [ ! -d "$2" ]
+
+	if [ ! -d "$param_website_name" ]
 	then
-		mkdir $2
-		cd $2
+		mkdir $param_website_name
+	fi
+
+	bol_create=0
+
+	if ls -1qA $param_website_name | grep -q .
+	then
+		echo "The directory is not empty, do you want to continue?"
+		select yn in "Yes" "No"; do
+			case $yn in
+				Yes ) bol_create=1; break;;
+				No ) break;;
+			esac
+		done
+	else
+		bol_create=1	
+	fi
+
+	if [ $bol_create -eq 0 ]
+	then
+		exit;
+	else	
+
+		cd $param_website_name
 		git clone https://github.com/z3r0101/application.git
 		git clone https://github.com/z3r0101/vendors.git
 		mkdir compiles
 		mkdir compiles/cms
 		chmod -R 777 compiles #Use approriate write permission when moving to production
-		mkdir uploads
-		mkdir uploads/cms
-		chmod -R 777 uploads #Use approriate write permission when moving to production	
+		mkdir assets
+		mkdir assets/uploads
+		mkdir assets/uploads/temp
+		chmod -R 777 assets #Use approriate write permission when moving to production	
 		wget https://raw.githubusercontent.com/z3r0101/siteroot/master/.htaccess
 		wget https://raw.githubusercontent.com/z3r0101/siteroot/master/.gitignore
 	 
-
 		is_executed=1
-	else
-		echo "Directory \"$2\" already exist.";
 	fi
+
 fi
 
 if [ "$1" == "remove" ]
 then
-	if [ -d "$2" ]
+	if [ -d "$param_website_name" ]
 	then
-		rm -rf $2
+		bol_remove_dir=0
+		echo "Do you also want to remove the directory \"${param_website_name}\""
+		select yn in "Yes" "No"; do
+			case $yn in
+				Yes ) bol_remove_dir=1; break;;
+				No ) break;;
+			esac
+		done
+
+		if [ $bol_remove_dir -eq 1 ]
+		then
+			rm -rf $param_website_name
+		else
+			cd $param_website_name && rm -rf `ls -Ab`	
+		fi	
+
+		
 		is_executed=1
 	else
 		echo "Directory \"$2\" does not exist."; 
@@ -78,5 +124,3 @@ else
 		fi
 	fi
 fi
-
-
